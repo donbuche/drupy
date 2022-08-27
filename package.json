@@ -1,0 +1,41 @@
+{
+  "name": "drupy",
+  "version": "1.0.0",
+  "description": "A responsive skeleton theme based on Bootstrap 5 and Webpack 4.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack --watch",
+    "build:dev": "webpack --mode development",
+    "build:prod": "NODE_ENV=production webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/donbuche/drupy.git"
+  },
+  "keywords": [
+    "Drupal 9"
+  ],
+  "author": "Joan Galtés i Moreno <donbuche@gmail.com> (https://www.arianewebdesign.com)",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "7.18.10",
+    "@babel/preset-env": "7.18.10",
+    "babel-loader": "8.2.5",
+    "clean-webpack-plugin": "3.0.0",
+    "css-loader": "4.1.1",
+    "file-loader": "6.2.0",
+    "mini-css-extract-plugin": "0.9.0",
+    "node-sass-glob-importer": "5.3.2",
+    "sass": "1.54.4",
+    "sass-loader": "9.0.2",
+    "style-loader": "1.2.1",
+    "url-loader": "4.1.0",
+    "webpack": "4.46.0",
+    "webpack-cli": "3.3.12"
+  },
+  "dependencies": {
+    "@fontsource/montserrat": "4.5.12",
+    "bootstrap": "5.2.0",
+    "bootstrap-icons": "1.9.1"
+  }
+}

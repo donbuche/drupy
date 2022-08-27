@@ -1,0 +1,27 @@
+name: Drupy
+type: theme
+description: 'A responsive skeleton theme based on Bootstrap 5 and Webpack 4.'
+version: VERSION
+base theme: false
+core_version_requirement: ^8 || ^9
+
+# Libraries
+
+libraries:
+  - support/global-styling
+  - support/global-scripts
+
+# Regions
+
+regions:
+  brand: 'Site branding'
+  secondary_menu: 'Secondary navigation'
+  main_menu: 'Main navigation'
+  hero: 'Hero'
+  featured: 'Featured'
+  help: 'Help'
+  tabs: 'Tabs'
+  content: 'Content'
+  footer: 'Footer'
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
