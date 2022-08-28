@@ -28,19 +28,16 @@
  *   comment/reply/12345).
  *
  * Regions:
- * - page.marquee_first: Items for the 'Marquee First' region.
- * - page.marquee_second: Items for the 'Marquee Second' region.
- * - page.marquee_third: Items for the 'Marquee Third' region.
- * - page.marquee_last: Items for the 'Marquee Last' region.
  * - page.brand: Items for the 'Brand' region.
  * - page.main_menu: Items for the 'Main menu' region.
+ * - page.secondary_menu: Items for the 'Secondary menu' region.
  * - page.hero: Items for the 'Hero' region.
  * - page.featured: Items for the 'Featured' region.
+ * - page.breadcrumbs: Items for the 'Breadcrumbs' region.
  * - page.help: Dynamic help text, mostly for admin pages.
  * - page.tabs: Items for the 'Tabs' region.
  * - page.content: The main content of the current page.
- * - page.content_bottom: Items for the 'Content Bottom'
- * - page.footer: Items for the footer region.
+ * - page.footer: Items for the 'Footer' region.
  *
  * @see template_preprocess_page()
  * @see html.html.twig
@@ -51,7 +48,6 @@
 <div class="layout-container">
 
   <header id="header" role="banner">
-
       <div class="header">
         <div class="container">
           <div class="wrapper">
@@ -62,12 +58,11 @@
               </div>
             {% endif %}
 
-
             <div id="menus" class="menus">
 
-              {% if page.secondary_menu %}
-                <div class="secondary-menu">
-                  {{ page.secondary_menu }}
+              {% if page.brand %}
+                <div class="brand-mobile">
+                  {{ page.brand }}
                 </div>
               {% endif %}
 
@@ -77,11 +72,17 @@
                 </div>
               {% endif %}
 
+              {% if page.secondary_menu %}
+                <div class="secondary-menu">
+                  {{ page.secondary_menu }}
+                </div>
+              {% endif %}
+
             </div>
 
-          </div>{# /.wrapper #}
-        </div>{# /.container #}
-      </div>{# /.header #}
+          </div>
+        </div>
+      </div>
 
       <button id="menu-toggler">
         <span class="visually-hidden-focusable">{{ 'Show main menu'|t }}</span>
@@ -89,39 +90,49 @@
 
   </header>
 
-  {% if page.hero %}
-    <div class="hero">
+  <div class="content-top">
+    {% if page.hero %}
+    <div class="container">
       {{ page.hero }}
     </div>
-  {% endif %}
+    {% endif %}
 
-  {% if page.featured %}
-    <div class="featured">
-      <div class="container">
-        {{ page.featured }}
+    {% if page.featured %}
+      <div class="featured">
+        <div class="container">
+          {{ page.featured }}
+        </div>
       </div>
-    </div>
-  {% endif %}
+    {% endif %}
 
-  {% if page.help %}
-    <div class="container">
-      {{ page.help }}
-    </div>
-  {% endif %}
+    {% if page.breadcrumbs %}
+      <div class="breadcrumbs">
+        <div class="container">
+          {{ page.breadcrumbs }}
+        </div>
+      </div>
+    {% endif %}
 
-  {% if page.tabs %}
-    <div class="container">
-      {{ page.tabs }}
-    </div>
-  {% endif %}
+    {% if page.help %}
+      <div class="container">
+        {{ page.help }}
+      </div>
+    {% endif %}
+
+    {% if page.tabs %}
+      <div class="container">
+        {{ page.tabs }}
+      </div>
+    {% endif %}
+  </div>
 
   <main role="main">
     <a id="main-content" tabindex="-1"></a>{# link is in html.html.twig #}
-
     <div class="layout-content">
-      {{ page.content }}
-    </div>{# /.layout-content #}
-
+      <div class="container">
+        {{ page.content }}
+      </div>
+    </div>
   </main>
 
   <footer id="footer" class="footer" role="contentinfo">
@@ -132,4 +143,4 @@
     {% endif %}
   </footer>
 
-</div>{# /.layout-container #}
+</div>

@@ -8,17 +8,18 @@ core_version_requirement: ^8 || ^9
 # Libraries
 
 libraries:
-  - support/global-styling
-  - support/global-scripts
+  - drupy/global-styling
+  - drupy/global-scripts
 
 # Regions
 
 regions:
   brand: 'Site branding'
-  secondary_menu: 'Secondary navigation'
   main_menu: 'Main navigation'
+  secondary_menu: 'Secondary navigation'
   hero: 'Hero'
   featured: 'Featured'
+  breadcrumbs: 'Breadcrumbs'
   help: 'Help'
   tabs: 'Tabs'
   content: 'Content'

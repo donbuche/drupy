@@ -27,8 +27,7 @@
  * @ingroup themeable
  */
 #}
-{# Default block template #}
-{# <div{{ attributes }}>
+<div{{ attributes }}>
   {{ title_prefix }}
   {% if label %}
     <h2{{ title_attributes }}>{{ label }}</h2>
@@ -36,19 +35,5 @@
   {{ title_suffix }}
   {% block content %}
     {{ content }}
-  {% endblock %}
-</div> #}
-
-{# Block template required by Layout builder module #}
-<div{{ attributes.addClass(classes) }}>
-  {{ title_prefix }}
-  {% if label %}
-    <h2{{ title_attributes }}>{{ label }}</h2>
-  {% endif %}
-  {{ title_suffix }}
-  {% block content %}
-    <div{{ content_attributes.addClass('content') }}>
-      {{ content }}
-    </div>
   {% endblock %}
 </div>
