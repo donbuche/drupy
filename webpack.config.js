@@ -4,34 +4,47 @@ const path = require('path');
 const webpack = require('webpack');
 const globImporter = require('node-sass-glob-importer');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-// Set plugins
-
-let pluginsConfig = [
-  new MiniCssExtractPlugin(
-    {
-      filename: 'css/styles.css'
-    }
-  )
-];
+const TerserPlugin = require('terser-webpack-plugin');
+const svgToMiniDataURI = require('mini-svg-data-uri');
 
 // Set variables by environment
 
-let isProd = process.env.NODE_ENV === 'production';
-let modeConfig = isProd ? 'production' : 'development';
-let statsConfig = isProd ? 'normal' : 'normal';
-let sourceMapConfig = isProd ? false : true;
-let SourceMapDevToolPluginConfig = !isProd ? pluginsConfig.push(new webpack.SourceMapDevToolPlugin({})) : false;
+let isProd = (process.env.NODE_ENV === 'production') ? true : false;
 
-//  Info flag
+// Set plugins
 
-console.log('Running in ' + modeConfig + ' mode.');
+let pluginsConfig = [];
+
+if (isProd) {
+  pluginsConfig = [
+    new MiniCssExtractPlugin({filename: 'css/styles.css'})
+  ];
+}
+else {
+  pluginsConfig = [
+    new MiniCssExtractPlugin({filename: 'css/styles.css'}),
+    new webpack.SourceMapDevToolPlugin({})
+  ]
+}
+
+// JS Optimization
+
+if (isProd) {
+  module.exports = {
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+    },
+  };
+}
 
 // Module configuration
 
 module.exports = {
-  mode: modeConfig,
-  stats: statsConfig,
+  devtool: isProd ? false : 'source-map',
+  mode: isProd ? 'production' : 'development',
+  stats: 'minimal',
+  watch: isProd ? false : true,
   entry: path.resolve(__dirname, './src/js/index.js'),
   output: {
     filename: 'js/scripts.js',
@@ -42,89 +55,126 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        use: {
+        enforce: "pre",
+        use: [
+          'source-map-loader',
+          {
           loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
+            options: {
+              presets: ['@babel/preset-env']
+            }
           }
-        }
+        ]
       },
       {
         test: /\.css$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
-            options: {
-              sourceMap: sourceMapConfig,
-            },
           },
-          'css-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            }
+          }
         ],
       },
       {
         test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          "css-loader",
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            }
+          },
           {
             loader: "sass-loader",
             options: {
-              sourceMap: sourceMapConfig,
+              sourceMap: true,
               sassOptions: {
                 // @see: https://tinyurl.com/yzf754ed
-                importer: globImporter()
+                // importer: globImporter()
               }
             }
+          },
+          {
+            loader: 'import-glob-loader'
           }
         ]
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          outputPath: 'img',
-          publicPath: '../img/',
+        type: 'asset/resource',
+        generator: {
+          filename: 'img/[name][ext]'
         }
-      },
-      {
-        test: /montserrat.*\.(eot|ttf|woff|woff2)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          outputPath: 'fonts/montserrat',
-          publicPath: '../fonts/montserrat/',
-        }
+        // loader: 'file-loader',
+        // options: {
+        //   name: '[name].[ext]',
+        //   outputPath: 'img',
+        //   publicPath: '../img/',
+        // }
       },
       // {
-      //   test: /quentin.*\.(eot|ttf|woff|woff2)$/,
+      //   test: /montserrat.*\.(eot|ttf|woff|woff2)$/,
       //   loader: 'file-loader',
       //   options: {
       //     name: '[name].[ext]',
-      //     outputPath: 'fonts/quentin',
-      //     publicPath: '../fonts/quentin/',
+      //     outputPath: 'fonts/montserrat',
+      //     publicPath: '../fonts/montserrat/',
       //   }
       // },
       {
-        test: /\.svg$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          outputPath: 'icons',
-          publicPath: '../icons/',
+        test: /inter-tight.*\.(eot|ttf|woff|woff2)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'fonts/inter-tight/[name][ext]'
         }
+        // loader: 'file-loader',
+        // options: {
+        //   name: '[name].[ext]',
+        //   outputPath: 'fonts/inter-tight',
+        //   publicPath: '../fonts/inter-tight/',
+        // }
+      },
+      {
+        test: /\.svg$/,
+        type: 'asset/resource',
+          generator: {
+            filename: 'icons/[name][ext]'
+          //   dataUrl: content => {
+          //     content = content.toString();
+          //     return svgToMiniDataURI(content);
+          //  }
+         }
+        // loader: 'file-loader',
+        // generator: {
+        //   filename: 'icons/[name].[ext]'
+        // }
+        // options: {
+        //   name: '[name].[ext]',
+        //   outputPath: 'icons',
+        //   publicPath: '../icons/',
+        // }
       },
       {
         test: /bootstrap-icons\.(woff|woff2)$/,
         include: path.resolve(__dirname, './node_modules/bootstrap-icons/font/fonts'),
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]',
-          outputPath: 'webfonts',
-          publicPath: '../webfonts/',
+        type: 'asset/resource',
+        generator: {
+          filename: 'webfonts/[name][ext]'
         }
+        // loader: 'file-loader',
+        // options: {
+        //   name: '[name].[ext]',
+        //   outputPath: 'webfonts',
+        //   publicPath: '../webfonts/',
+        // }
       }
     ],
   },
-  plugins: pluginsConfig,
+  plugins: pluginsConfig
 }

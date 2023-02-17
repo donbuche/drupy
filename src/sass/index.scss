@@ -3,13 +3,13 @@
 
 // Plugins
 // Include here your plugins scss files.
-// Import example of a datepicker plugin added with npm: 
+// Import example of a datepicker plugin added with npm:
 // @import '~js-datepicker/src/datepicker';
 
 // Mixins
 @import './mixins/mixins';
 
-// Fontsource's fonts 
+// Fontsource's fonts
 @import './mixins/fonts';
 @import '~@fontsource/montserrat/latin-300.css'; // Light
 @import '~@fontsource/montserrat/latin-400.css'; // Regular
@@ -64,4 +64,4 @@
 @import './blocks/**/*.scss';
 
 // Views
-@import './views/**/*.scss';
+// @import './views/**/*.scss';
