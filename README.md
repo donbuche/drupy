@@ -1,12 +1,12 @@
 # Drupy theme
 
 ## Introduction
-This is a responsive skeleton theme based on Bootstrap 5 and Webpack 4, ready for Drupal 9 websites.
+This is a responsive skeleton theme based on Bootstrap 5 and Webpack 4, ready for Drupal 9/10 websites.
 The theme itself brings you very few CSS styles by default, so you will be able to extend it with your own styles.
 
 However, some common implementations are included by default in the .theme file, to make easiest the process of developing a theme from a skeleton.
 
-The main purpose of this theme is to allow you to build your custom theme without dependencies like base themes, showing a way to grow up your custom theme as required by your needs. And all managed by an excellent bundler like Webpack.
+The main purpose of this theme is to allow you to build your custom theme without dependencies like base themes, showing a way to grow up your own custom theme as required by your needs. And all managed by an excellent bundler like Webpack.
 
 ## How to use
 The theme is self-documented about how to use it in each file, so pay attention to the inline comments you will find.

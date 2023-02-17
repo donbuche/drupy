@@ -46,6 +46,17 @@ function drupy_preprocess_html(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_page()
+ */
+function drupy_preprocess_page(array &$variables) {
+  // Making language variable available in client-side
+  // It will be useful to manage translation of strings managed by Javascript
+  // @see https://bit.ly/3vstonO
+  $language = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $variables['#attached']['drupalSettings']['language'] = $language;
+}
+
+/**
  * Implements hook_preprocess_region().
  */
 function drupy_preprocess_region(&$variables) {
@@ -64,11 +75,32 @@ function drupy_preprocess_block(&$variables) {
   $variables['attributes']['class'][] = 'block';
   // Add custom class based on the bundle
   if (isset($variables['elements']['content']['#block_content'])) {
-    $variables['attributes']['class'][] = 'block-' . $variables['elements']['content']['#block_content']->bundle();
+    $variables['attributes']['class'][] = str_replace('_',  '-',  $variables['elements']['content']['#block_content']->bundle());
   }
   // Add custom class based on the display mode
   if (isset($variables['content']['#view_mode'])) {
     $variables['attributes']['class'][] = 'block-' . str_replace('_', '-', $variables['content']['#view_mode']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_layout().
+ */
+function drupy_preprocess_layout(&$variables) {
+  /**
+   * Set a helper variables to determine Layout builder page context, such as:
+   *    - /node/[NID]
+   *    - /node/[NID]/layout
+   *    - /admin/structure/types/manage/[BUNDLE]/display/full/layout
+   */
+  $path = \Drupal::service('path.current')->getPath();
+  if (strpos($path, '/admin/structure/') !== false || preg_match('/\/node\/\d+\/layout/', $path)) {
+    $variables['adminPage'] = true;
+    $variables['context'] = 1;
+  }
+  else {
+    $variables['adminPage'] = false;
+    $variables['context'] = 0;
   }
 }
 
@@ -79,7 +111,7 @@ function drupy_preprocess_field(&$variables, $hook) {
   $element = $variables['element'];
   // Creating variables for the template.
   $variables['entity_type'] = $element['#entity_type'];
-  $variables['field_name'] = $element['#field_name'];
+  $variables['field_name'] = $element['#field_name'] === 'body' ? 'field-' . $element['#field_name'] : $element['#field_name'];
   $variables['field_type'] = $element['#field_type'];
   $variables['label_display'] = $element['#label_display'];
   $variables['label_hidden'] = $element['#label_display'] == 'hidden';
