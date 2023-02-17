@@ -20,4 +20,6 @@ body {
   grid-template-columns: 1fr;
   grid-template-rows: auto auto 1fr auto;
   height: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
